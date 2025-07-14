@@ -50,7 +50,57 @@ const getAllProducts = async (req, res) => {
     }
 };
 
+// Get product by ID
+const getProductById = async (req, res) => {
+    try {
+        const product = await productModel.findById(req.params.id);
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+        }
+        res.status(200).json({
+            message: "Product fetched successfully",
+            data: product
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: "Error fetching product",
+            data: error.message || error
+        });
+    }
+};
+
+const updateProductById = async (req, res) => {
+    try {
+        const { productTitle, price, description } = req.body;
+
+        let updatedData = { productTitle, price, description };
+
+        if (req.file) {
+            // Upload new image to Cloudinary
+            const cloudImage = await cloudinary.uploader.upload(req.file.path);
+            updatedData.productImage = cloudImage.secure_url;
+        }
+
+        const updatedProduct = await productModel.findByIdAndUpdate(
+            req.params.id,
+            updatedData,
+            { new: true } // return updated document
+        );
+
+        if (!updatedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+
+        res.status(200).json({ message: 'Product updated successfully', data: updatedProduct });
+    } catch (error) {
+        res.status(500).json({ message: 'Error updating product', error: error.message });
+    }
+};
+
 module.exports = {
     newProduct,
-    getAllProducts
+    getAllProducts,
+    getProductById,
+    updateProductById,
+
 };

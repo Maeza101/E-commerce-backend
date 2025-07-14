@@ -1,10 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const { getAllProducts, newProduct,
+const {
+    getAllProducts,
+    newProduct,
+    getProductById,
+    updateProductById
 } = require('../controller/product.controller');
 const upload = require('../middleware/multer');
 
-router.route(`/newproduct`).post(upload, newProduct);
-router.route(`/allproducts`).get(getAllProducts);
+router.post('/newproduct', upload, newProduct);
+router.get('/allproducts', getAllProducts);
+router.get('/:id', getProductById); // ✅ View product by ID
+router.put('/:id', upload, updateProductById); // ✅ Update product by ID
+
 
 module.exports = router;
