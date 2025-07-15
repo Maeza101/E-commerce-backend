@@ -97,10 +97,12 @@ const updateProductById = async (req, res) => {
     }
 };
 
+
+
 module.exports = {
     newProduct,
     getAllProducts,
     getProductById,
-    updateProductById,
+    updateProductById
 
 };

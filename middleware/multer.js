@@ -10,6 +10,6 @@ const storage = multer.diskStorage({
     }
 });
 
-const upload = multer({ storage }).single('productImage'); // 'file' is the name of the file input field
+const upload = multer({ storage }).single('productImage'); // 'image' is the name of the image input field
 
 module.exports = upload;
